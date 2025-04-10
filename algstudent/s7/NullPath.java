@@ -31,7 +31,7 @@ public class NullPath {
 		int n = Integer.parseInt(args[0]);
 		
 		
-
+		for (int i =0; i<100;i++)
 			new NullPath(n).calculateNullPath(); 
 
 
@@ -75,30 +75,32 @@ public class NullPath {
 	}
 	
 	private void backtrackingWithoutPrints(int origin) {
-		if(found()) {
-		//	System.out.println("Solution found ");
-		//	printPath();
-			found = true;
-		}else {		
-			if (sum<toleranceLimit &&sum> -toleranceLimit && path.size()<=n /*&& firstAndLast()*/ ) {
-	
-				for(int i= 0;i<n;i++) {
-					if (!path.contains((Integer)i)) { // nodes cannot be visited twice  
-					sum+= weights[origin][i];
-					path.add(i);
-					visited[i]=true;
-				//	System.out.println(origin);
-			//		System.out.print(i);
-					
-					backtrackingWithoutPrints(i);
-					
-					visited[i]=false;
-					path.remove((Integer)i);
-					sum-= weights[origin][i];
-					}
-				}
-			}
-		}
+		 if(found) {
+		    	return;
+		    }
+			if (isFound() || found) { 
+		      //  System.out.println("Solution found");
+		      //  printPath();
+		        found = true;
+		        return; 
+		    }
+
+		    if (sum < toleranceLimit && sum > -toleranceLimit && path.size() <= n) {
+		        for (int i = 0; i < n; i++) {
+		            if (!visited[i]) { 
+		                sum += weights[origin][i];
+		                path.add(i);
+		                visited[i] = true;
+
+		                backtrackingWithoutPrints(i);
+
+		                
+		                visited[i] = false;
+		                path.remove(path.size() - 1); 
+		                sum -= weights[origin][i];
+		            }
+		        }
+		    }
 		
 		
 	}
@@ -106,30 +108,34 @@ public class NullPath {
 
 
 	private void backtracking(int origin) {
-		if(found()) {
-			System.out.println("Solution found ");
-			printPath();
-			found = true;
-		}else {		
-			if (sum<toleranceLimit &&sum> -toleranceLimit && path.size()<=n /*&& firstAndLast()*/ ) {
-	
-				for(int i= 0;i<n;i++) {
-					if (!path.contains((Integer)i)) { // nodes cannot be visited twice  
-					sum+= weights[origin][i];
-					path.add(i);
-					visited[i]=true;
-				//	System.out.println(origin);
-			//		System.out.print(i);
-					
-					backtracking(i);
-					
-					visited[i]=false;
-					path.remove((Integer)i);
-					sum-= weights[origin][i];
-					}
-				}
-			}
-		}		
+	    if(found) {
+	    	return;
+	    }
+		if (isFound() || found) { 
+	        System.out.println("Solution found");
+	        printPath();
+	        found = true;
+	        return; 
+	    }
+
+	    
+
+	    if (sum < toleranceLimit && sum > -toleranceLimit && path.size() <= n) {
+	        for (int i = 0; i < n; i++) {
+	            if (!visited[i]) { 
+	                sum += weights[origin][i];
+	                path.add(i);
+	                visited[i] = true;
+
+	                backtracking(i);
+
+	                
+	                visited[i] = false;
+	                path.remove(path.size() - 1); 
+	                sum -= weights[origin][i];
+	            }
+	        }
+	    }
 	}
 
 	private boolean firstAndLast() {
@@ -157,7 +163,7 @@ public class NullPath {
 		System.out.print("\n");
 	}
 
-	private boolean found() {
+	private boolean isFound() {
 		return sum<=maxWeight && sum>=-maxWeight  &&  pathContainsAll() && firstAndLast() ;
 	}
 	
@@ -172,13 +178,7 @@ public class NullPath {
 		return true;
 	}
 
-	private boolean allNodesVisited() {
-		for (int i =0 ;i<visited.length; i++ ) {
-			if(!visited[i])
-				return false;
-		}
-		return true;
-	}
+
 
 	private void generateGraph(int n) {
 		weights = new int[n][n];

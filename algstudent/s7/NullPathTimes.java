@@ -6,18 +6,22 @@ public class NullPathTimes {
 
 	
 	public static void main(String[] args) {
-		long t1, t2;
-		for (int n =2; n<Integer.MAX_VALUE; n = n+1 ) {
+		long t1, t2, tSum = 0;
+		for (int n =40; n<Integer.MAX_VALUE; n = n+5 ) {
 			
-			t1 = System.currentTimeMillis();
+			
 
-			for (int i =0; i<1;i++)
+			for (int i =0; i<100;i++) {
+				t1 = System.currentTimeMillis();
 				new NullPath(n).calculateNullPathWithoutPrints(); 
 
-			t2 = System.currentTimeMillis();
+				t2 = System.currentTimeMillis();
+				tSum += t2 - t1; 
+			}
+				
 				
 			
-			System.out.println("n=" + n + "**TIME=" + (t2 - t1));
+			System.out.println("n=" + n + "**TIME=" + (tSum/100));
 		}
 
 	}
