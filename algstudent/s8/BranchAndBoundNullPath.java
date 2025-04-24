@@ -28,6 +28,8 @@ public class BranchAndBoundNullPath {
 	 */
 	public void branchAndBound(Node rootNode) { 
 		ds.insert(rootNode); //First node to be explored
+		
+		boolean foundFirstPath=false;
 	
 		pruneLimit = rootNode.initialValuePruneLimit();
 
@@ -38,16 +40,26 @@ public class BranchAndBoundNullPath {
 			
 			for (Node child : children)
 				if (child.isSolution()) {
+					
+					foundFirstPath=true;
+					
 					int cost = child.getHeuristicValue();
 					if (cost < pruneLimit) {
 						pruneLimit = cost;
 						bestNode = child;
-					} 
+					}
+					
+					//break;
 				}
 				else
-					if (child.getHeuristicValue() < pruneLimit) {
+					if (child.getHeuristicValue() < pruneLimit &&!child.prune()) {
 						ds.insert(child);
 					}
+			
+			if(foundFirstPath) {
+				break;
+			}
+			
 		} //while
 	}
 		
